@@ -19,13 +19,11 @@ export default function Home() {
     const [query, setQuery] = useState("")
 
     const handleSearch = async (query: string) => {
-        console.log(`Query ${query}`)
         setQuery(query)
         const [blue_search, red_search] = await searchResults(query);
         setBlueSearch(blue_search)
         setRedSearch(red_search)
         const formattedResults = formatSearches(blue_search, red_search)
-        console.log(`Got results: ${formattedResults}`)
         setResults(formattedResults)
         setView("results")
 
@@ -38,25 +36,15 @@ export default function Home() {
     return (
         <div className={styles.container}>
             {
-                view == "search" ?
+                view == "search"?
                     <SearchBar handleSearch={handleSearch} /> :
                     <div >
                         <div className={styles.search_button_container}>
                             <Button variant="light" className={styles.search_button} size='sm' onClick={handleBack}> Another search</Button>
-                          </div>
+                        </div>
                         {blueSearch && <ResultsDashboard query={query} blue_search_results={blueSearch} red_search_results={redSearch}></ResultsDashboard>}
                         
                     </div>
-                // <>
-                //     <div className={styles.results_container}>
-                //         {completion && <LLMResponse response={completion}/>}
-                //         <SearchResults results={results}/>
-
-                //         <div className={styles.search_button_container}>
-                //             <Button variant="light" className={styles.search_button} size='lg' onClick={handleBack}> Another search</Button>
-                //         </div>
-                //     </div>
-                // </>
             }
         </div>
     );

@@ -47,13 +47,11 @@ function format_search_results_as_RAG_context(results: SearchResult[]): string {
      * Take in a result object from  the exa search and format it into a LLM ready text
      */
     let output = "";
-    console.log(results)
     for (const content of results.map(res => ({ 
         title: res.title, 
         text: res.text, 
         highlights: res.highlights 
     }))) {
-        console.log(content)
         output += "Title:" + content["title"] + "\n"
         if (content["highlights"]) {
             for (const highlight of content["highlights"]) {
@@ -66,7 +64,6 @@ function format_search_results_as_RAG_context(results: SearchResult[]): string {
         output += "\n"
         output += "-------------------\n\n"
     }
-    // console.log(`LLM results: ${output}`)
 
     return output
 }
@@ -115,8 +112,6 @@ async function RAGResponse(
             { role: "system", content: "Please format the output as follows:\n\n1. Summary \n2. Democratic bias \n3. Republican Bias" }
         ],
     });
-    console.log(completion)
-    console.log(completion.choices[0])
     return completion.choices[0].message.content
 }
 
@@ -143,7 +138,6 @@ async function RAGResponse(
 //         output += tab_spaces + "</article> \n\n"
 //     }
 //     output += "</articles>\n";
-//     // console.log(output)
 //     return output
 // }
 
@@ -182,7 +176,6 @@ async function RAGResponse(
 //     });
   
 //     const messageContent = completion.choices[0]?.message?.content || "";
-//     console.log(completion.choices[0])
  
 //     return messageContent;
 //   }

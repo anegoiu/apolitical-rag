@@ -10,10 +10,20 @@ interface SearchBarProps {
 }
 export default function SearchBar({ handleSearch }: SearchBarProps) {
     const [query, setQuery] = useState("");
+    const [isSearching, setIsSearching] = useState(false);
 
     const updateSearch = (title: string) => {
         setQuery(title_to_query[title])
     }
+
+    const triggerSearch = async() => {
+        setIsSearching(true);
+        console.log("Searching...");
+        await handleSearch(query);
+        console.log("Done searching");
+        setIsSearching(false);
+    }
+
     return (
         <div className={styles.searchBox}>
             <h1>Apolitical Rag</h1>
@@ -46,20 +56,22 @@ export default function SearchBar({ handleSearch }: SearchBarProps) {
                 </Dropdown>
             </div>
 
-
             <Button
-                variant="light"
-                onClick={() => handleSearch(query)}
+                variant={isSearching ? "secondary" : "light"}
+                onClick={() => {
+                    triggerSearch()
+                }}
                 className={styles.button}
+                disabled={isSearching}
             >
-                Search
+                {isSearching ? "Searching..." : "Search"}
             </Button>
         </div>
     );
 }
 
 let title_to_query: Record<string, string> = {
-    "China hacking calls of senior political figures within the US":
+    "China hacking calls of senior political figures ewithin the US":
         "US outlook on China hacking calls of senior political figures within the US",
     // romania election
     "trump's term": "Trump's business empire has expanded. Here's where he could profit in his second term.",

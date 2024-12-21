@@ -1,7 +1,7 @@
 "use client";
 import SearchResults from '../search_results/search_results'
 import styles from '../index.module.css'
-import {useState } from 'react';
+import { useState } from 'react';
 import { Search, SearchResult } from '../types';
 import { RAGResponse } from '../../utils';
 // import LLMResponse from '../llm_response/llm_response';
@@ -16,7 +16,7 @@ interface ResultsDashboardProps {
     red_search_results: any; // Replace 'any' with the appropriate type if known
 }
 
-export default function ResultsDashboard({query, blue_search_results, red_search_results}: ResultsDashboardProps) {
+export default function ResultsDashboard({ query, blue_search_results, red_search_results }: ResultsDashboardProps) {
     // display "back to search" button and loading screen or RagResults component"
     // i don't want the biased results
     // when this is created kick off Rag result 
@@ -29,36 +29,31 @@ export default function ResultsDashboard({query, blue_search_results, red_search
 
     async function fetchData() {
         setTriggeredRag(true);
-      const message = await RAGResponse(query, blue_search_results, red_search_results);
-      if (message) setCompletion(message);
+        const message = await RAGResponse(query, blue_search_results, red_search_results);
+        if (message) setCompletion(message);
     }
-    
+
     const formattedResults = formatSearches(blue_search_results, red_search_results);
-    console.log(`blue: ${blue_search_results}`)
-    console.log(formattedResults)
     return (
         <div className={styles.results_container}>
-            <div    >
-              {<LLMResponse
-                showModal={showModal}
-                handleClose={handleClose}
-                response={completion}
-            />}
+            <div>
+                <LLMResponse
+                    showModal={showModal}
+                    handleClose={handleClose}
+                    response={completion}
+                />
             </div>
-            
-            {
-            <SearchResults results={formattedResults} /> 
-            }
+            <SearchResults results={formattedResults} />
             <div>
                 {!triggeredRag && <Button variant="light" data-bs-toggle="popover" onClick={fetchData}>Analyze Bias </Button>}
-                {triggeredRag && !completion  && <h3> ⏳ Loading LLM response...</h3>}
+                {triggeredRag && !completion && <h3> ⏳ Loading LLM response...</h3>}
                 {completion && <Button variant="light" onClick={() => setShowModal(true)}>Bias Evaluation</Button>}
             </div>
-    </div>
+        </div>
 
-);
+    );
 
-      
+
 }
 
 
@@ -80,7 +75,7 @@ function formatSearches(
         }
     }
 
-    
+
     if (red_search.results) {
         for (const result of red_search.results) {
             results.push({
